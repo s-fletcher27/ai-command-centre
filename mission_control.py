@@ -168,7 +168,7 @@ with Live(layout, refresh_per_second=1, screen=True) as live:
 
         # Update Local Panel
         layout["local_panel"].update(
-            Panel(Align.center(generate_table({"Uptime": uptime, "Jenkins": jenkins_state, "Network": ts_ip, "CPU/RAM": f"{cpu_val}% / {ram_val}%", "Temp": temp}, ">
+            Panel(Align.center(generate_table({"Uptime": uptime, "Jenkins": jenkins_state, "Network": ts_ip, "CPU/RAM": f"{cpu_val}% / {ram_val}%", "Temp": temp}, "magenta"), vertical="middle"), 
                     title="LOCAL BASE", border_style="bold magenta", box=box.HEAVY)
         )
 
@@ -181,3 +181,4 @@ with Live(layout, refresh_per_second=1, screen=True) as live:
         if time_to_sleep < 0.1: time_to_sleep = 5
         time.sleep(time_to_sleep)
 
+            
