@@ -1,23 +1,36 @@
 pipeline {
-    agent any 
+    agent any
 
     stages {
-        stage('Fetch from GitHub') {
+        stage('Checkout') {
             steps {
-                // This pulls the latest code from your repo into the Jenkins workspace
+                // Pulls your code from GitHub
                 checkout scm
             }
         }
 
-        stage('Deploy to Home Directory') {
+        stage('Deploy to Pi Home') {
             steps {
                 script {
-                    // Copy the file from the workspace to the target path
-                    // We use 'sudo' to ensure we have permission to write to /home/pi/
-                    sh 'sudo cp mission_control.py /home/pi/mission_control.py'
+                    echo "Copying mission_control.py to /home/pi/..."
                     
-                    // Ensure the file is executable
-                    sh 'sudo chmod +x /home/pi/mission_control.py'
+                    // Note: No 'sudo' is used here because Jenkins 
+                    // is running inside the Docker container.
+                    sh 'cp mission_control.py /home/pi/mission_control.py'
+                    
+                    // Make it executable just in case
+                    sh 'chmod +x /home/pi/mission_control.py'
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                script {
+                    // This checks the timestamp of the file in the destination 
+                    // to prove it was actually updated.
+                    echo "Verifying file status at /home/pi/mission_control.py:"
+                    sh 'ls -lh /home/pi/mission_control.py'
                 }
             }
         }
@@ -25,7 +38,10 @@ pipeline {
 
     post {
         success {
-            echo "Successfully deployed mission_control.py to /home/pi/"
+            echo '✅ Mission Control deployed successfully!'
+        }
+        failure {
+            echo '❌ Deployment failed. Check the console logs above for errors.'
         }
     }
 }
