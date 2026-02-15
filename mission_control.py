@@ -150,7 +150,7 @@ with Live(layout, refresh_per_second=1, screen=True) as live:
 
         # Update Header
         layout["header"].update(
-            Panel(Align.center(f"[bold white]AI COMMAND CENTER[/bold white] | [bold yellow]{now_dt.strftime('%H:%M:%S')}[/bold yellow]"), 
+            Panel(Align.center(f"[bold white]🚀 AI COMMAND CENTER[/bold white] | [bold yellow]{now_dt.strftime('%H:%M:%S')}[/bold yellow]"), 
             style="on blue", box=box.SQUARE)
         )
         
